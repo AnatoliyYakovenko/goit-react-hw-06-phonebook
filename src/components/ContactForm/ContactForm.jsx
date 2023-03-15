@@ -1,38 +1,45 @@
 import { useState } from 'react';
+import { useDispatch } from 'react-redux';
+import { addContact } from 'redux/contactSlice';
 import css from './ContactForm.module.css';
 
-const INITIAL_STATE ={
-  name: '',
-  number: '',
-}
-
 export const ContactForm = ({onSubmit}) => {
-
-  const [state, setState] = useState(INITIAL_STATE);
-  const resetForm = () => {
-    setState(INITIAL_STATE);
-  };
+  const [name, setName] = useState('');
+  const [number, setNumber] = useState('');
+  const dispatch = useDispatch();
 
   const handleChange = e => {
     const { name, value } = e.target;
-    setState(prevState => {
-      return { ...prevState, [name]: value };
-    });
+    switch (name){
+      case 'name':
+        setName(value);
+        break;
+      case 'number':
+        setNumber(value);
+        break;
+        default:
+          return;
+    };
   };
 
   const handleSubmit = e => {
     e.preventDefault();
-
-    onSubmit(state);
+    dispatch(addContact(name, number));
     resetForm();
   };
+
+  const resetForm = () => {
+    setName('');
+    setNumber('');
+  };
+
     return (
       <form className={css.form} onSubmit={handleSubmit}>
         <label>
           Name
           <input
             className={css.inputName}
-            value={state.name}
+            value={name}
             onChange={handleChange}
             type="text"
             name="name"
@@ -45,7 +52,7 @@ export const ContactForm = ({onSubmit}) => {
           Number
           <input
             className={css.inputNumber}
-            value={state.number}
+            value={number}
             onChange={handleChange}
             type="tel"
             name="number"
