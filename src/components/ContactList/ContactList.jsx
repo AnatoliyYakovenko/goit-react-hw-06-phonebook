@@ -4,6 +4,8 @@ import { getContacts, getFilter } from "redux/selectors";
 
 import css from './ContactList.module.css';
 
+import { ContactListItem } from "./ContactListItem";
+
 export const ContactList = () => {
   const contacts = useSelector(getContacts);
   const filter = useSelector(getFilter);
